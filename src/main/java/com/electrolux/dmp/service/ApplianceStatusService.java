@@ -33,14 +33,20 @@ public class ApplianceStatusService {
         return applianceStatusRepo.findAll();
     }
 
+
+    public ApplianceStatus getApplianceStatusById(Integer id) {
+        return applianceStatusRepo.findById(id).orElse(null);
+    }
+
+    public List<ApplianceStatus> getApplianceStatusByCustomerId(String customerId) {
+        Customer customer = customerRepo.findByCustomerId(customerId).orElseThrow(() -> new NoSuchElementException());
+        return applianceStatusRepo.findByCustomer(customer);
+    }
+
     public ApplianceStatus createApplianceStatus(ApplianceStatusDto applianceStatusDto) {
         Customer customer = customerRepo.findByCustomerId(applianceStatusDto.getCustomerId()).orElseThrow(() -> new NoSuchElementException());
         Appliance appliance = applianceRepo.findByApplianceId(applianceStatusDto.getApplianceId()).orElseThrow(() -> new NoSuchElementException());
         return applianceStatusRepo.save(new ApplianceStatus(appliance, customer, Status.up.name(), new Timestamp(new Date().getTime())));
-    }
-
-    public ApplianceStatus getApplianceStatusById(Integer id) {
-        return applianceStatusRepo.findById(id).orElse(null);
     }
 
     public ApplianceStatus updateStatusForAppliance(Integer id, Status status) {
