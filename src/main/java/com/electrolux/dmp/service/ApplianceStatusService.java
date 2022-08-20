@@ -29,7 +29,6 @@ public class ApplianceStatusService {
     CustomerRepo customerRepo;
 
     public List<ApplianceStatus> getApplianceStatusList() {
-
         return applianceStatusRepo.findAll();
     }
 
