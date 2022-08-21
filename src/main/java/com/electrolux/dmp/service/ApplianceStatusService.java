@@ -1,7 +1,6 @@
 package com.electrolux.dmp.service;
 
 import com.electrolux.dmp.costants.Status;
-import com.electrolux.dmp.dto.ApplianceStatusDto;
 import com.electrolux.dmp.model.Appliance;
 import com.electrolux.dmp.model.ApplianceStatus;
 import com.electrolux.dmp.model.Customer;
@@ -42,9 +41,9 @@ public class ApplianceStatusService {
         return applianceStatusRepo.findByCustomer(customer);
     }
 
-    public ApplianceStatus createApplianceStatus(ApplianceStatusDto applianceStatusDto) {
-        Customer customer = customerRepo.findByCustomerId(applianceStatusDto.getCustomerId()).orElseThrow(() -> new NoSuchElementException());
-        Appliance appliance = applianceRepo.findByApplianceId(applianceStatusDto.getApplianceId()).orElseThrow(() -> new NoSuchElementException());
+    public ApplianceStatus createApplianceStatus(String customerId, String applianceId) {
+        Customer customer = customerRepo.findByCustomerId(customerId).orElseThrow(() -> new NoSuchElementException());
+        Appliance appliance = applianceRepo.findByApplianceId(applianceId).orElseThrow(() -> new NoSuchElementException());
         return applianceStatusRepo.save(new ApplianceStatus(appliance, customer, Status.up.name(), new Timestamp(new Date().getTime())));
     }
 

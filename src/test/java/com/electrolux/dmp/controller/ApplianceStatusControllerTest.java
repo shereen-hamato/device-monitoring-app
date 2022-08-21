@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -87,12 +86,11 @@ public class ApplianceStatusControllerTest {
 
     @Test
     public void testCreateApplianceStatus() throws Exception {
-        String uri = "/appliance-status";
-        when(applianceStatusService.createApplianceStatus(Mockito.any())).thenReturn(applianceStatus);
+        String uri = "/appliance-status/"+CUSTOMER_ID+"/"+APPLIANCE_ID;
+        when(applianceStatusService.createApplianceStatus(CUSTOMER_ID, APPLIANCE_ID )).thenReturn(applianceStatus);
         when(modelMapper.convertToDto(applianceStatus)).thenReturn(applianceStatusDto);
 
-        mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(applianceStatusDto)))
+        mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status", is("up")))
                 .andReturn().getResponse().getContentAsString();

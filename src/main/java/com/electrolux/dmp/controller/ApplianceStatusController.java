@@ -57,12 +57,12 @@ public class ApplianceStatusController {
         return applianceStatusDtos;
     }
 
-    @PostMapping
+    @PostMapping(value = "/{customerId}/{applianceId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ApplianceStatusDto createApplianceStatus
-            (@RequestBody ApplianceStatusDto applianceStatusDto) {
+            (@PathVariable("customerId") String customerId, @PathVariable("applianceId") String applianceId) {
         LOGGER.info("CREATE /appliance status");
-        return applianceStatusMapper.convertToDto(applianceStatusService.createApplianceStatus(applianceStatusDto));
+        return applianceStatusMapper.convertToDto(applianceStatusService.createApplianceStatus(customerId,applianceId));
     }
 
     @PutMapping(value = "/ping/{id}")

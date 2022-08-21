@@ -79,7 +79,7 @@ public class ApplianceStatusServiceTest {
     @Test
     public void testCreateApplianceStatus() {
         ArgumentCaptor<ApplianceStatus> applianceStatusCaptor = ArgumentCaptor.forClass(ApplianceStatus.class);
-        applianceStatusService.createApplianceStatus(applianceStatusDto);
+        applianceStatusService.createApplianceStatus(CUSTOMER_ID, APPLIANCE_ID);
 
         verify(applianceStatusRepo).save(applianceStatusCaptor.capture());
         assertEquals(applianceStatusCaptor.getValue().getAppliance().getId(), appliance.getId());

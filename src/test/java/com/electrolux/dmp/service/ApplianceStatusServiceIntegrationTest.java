@@ -92,7 +92,7 @@ public class ApplianceStatusServiceIntegrationTest {
 
     @Test
     public void testCreateApplianceStatus() {
-        ApplianceStatus applianceStatus = applianceStatusService.createApplianceStatus(applianceStatusDto);
+        ApplianceStatus applianceStatus = applianceStatusService.createApplianceStatus(CUSTOMER_ID, APPLIANCE_ID );
 
         ApplianceStatus applianceStatusCreated = applianceStatusRepo.findById(applianceStatus.getId()).orElseThrow(() -> new NoSuchElementException());
 
