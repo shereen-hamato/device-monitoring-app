@@ -1,4 +1,4 @@
-package com.electrolux.dmp.costants;
+package com.electrolux.dmp.constant;
 
 public enum Status {
     up,

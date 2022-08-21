@@ -1,6 +1,6 @@
 package com.electrolux.dmp.controller;
 
-import com.electrolux.dmp.costants.Status;
+import com.electrolux.dmp.constant.Status;
 import com.electrolux.dmp.dto.ApplianceStatusDto;
 import com.electrolux.dmp.mapper.ApplianceStatusMapper;
 import com.electrolux.dmp.model.Address;
@@ -11,7 +11,6 @@ import com.electrolux.dmp.service.ApplianceStatusService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

@@ -1,6 +1,6 @@
 package com.electrolux.dmp.controller;
 
-import com.electrolux.dmp.costants.Status;
+import com.electrolux.dmp.constant.Status;
 import com.electrolux.dmp.dto.ApplianceStatusDto;
 import com.electrolux.dmp.mapper.ApplianceStatusMapper;
 import com.electrolux.dmp.model.ApplianceStatus;

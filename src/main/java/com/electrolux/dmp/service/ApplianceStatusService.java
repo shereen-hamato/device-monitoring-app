@@ -1,6 +1,6 @@
 package com.electrolux.dmp.service;
 
-import com.electrolux.dmp.costants.Status;
+import com.electrolux.dmp.constant.Status;
 import com.electrolux.dmp.model.Appliance;
 import com.electrolux.dmp.model.ApplianceStatus;
 import com.electrolux.dmp.model.Customer;
