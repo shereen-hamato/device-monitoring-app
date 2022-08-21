@@ -20,8 +20,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -65,9 +68,21 @@ public class ApplianceStatusControllerTest {
 
         mvc.perform(MockMvcRequestBuilders.put(uri).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status", is(applianceStatusDto.getStatus())))
-                .andReturn().getResponse().getContentAsString();
+                .andExpect(jsonPath("$.status", is(Status.up.name())));
 
+    }
+
+    @Test
+    public void testGetApplianceStatusList() throws Exception {
+
+        String uri = "/appliance-status";
+        when(applianceStatusService.getApplianceStatusList()).thenReturn(getListofApplianceStatus(3));
+        when(modelMapper.convertToDto(applianceStatus)).thenReturn(applianceStatusDto);
+
+        mvc.perform(get(uri).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andReturn().getResponse().getContentAsString();
     }
 
     @Test
@@ -85,23 +100,33 @@ public class ApplianceStatusControllerTest {
 
     @Test
     public void testCreateApplianceStatus() throws Exception {
-        String uri = "/appliance-status/"+CUSTOMER_ID+"/"+APPLIANCE_ID;
-        when(applianceStatusService.createApplianceStatus(CUSTOMER_ID, APPLIANCE_ID )).thenReturn(applianceStatus);
+        String uri = "/appliance-status/" + CUSTOMER_ID + "/" + APPLIANCE_ID;
+        when(applianceStatusService.createApplianceStatus(CUSTOMER_ID, APPLIANCE_ID)).thenReturn(applianceStatus);
         when(modelMapper.convertToDto(applianceStatus)).thenReturn(applianceStatusDto);
 
         mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status", is("up")))
+                .andExpect(jsonPath("$.customerId", is(CUSTOMER_ID)))
+                .andExpect(jsonPath("$.applianceId", is(APPLIANCE_ID)))
                 .andReturn().getResponse().getContentAsString();
     }
 
 
-    public static String asJsonString(ApplianceStatusDto applianceStatusDto) {
+    public String asJsonString(ApplianceStatusDto applianceStatusDto) {
         try {
             return new ObjectMapper().writeValueAsString(applianceStatusDto);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<ApplianceStatus> getListofApplianceStatus(Integer size) {
+        List<ApplianceStatus> list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            list.add(new ApplianceStatus());
+        }
+        return list;
     }
 
 }

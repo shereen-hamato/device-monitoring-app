@@ -83,8 +83,6 @@ public class ApplianceStatusServiceIntegrationTest {
     @Test
     public void testGetApplianceStatussList() {
         applianceStatusRepo.save(new ApplianceStatus(appliance, customer, STATUS, LAST_MODIFIED));
-        applianceStatusRepo.save(new ApplianceStatus(appliance, customer, STATUS, LAST_MODIFIED));
-        applianceStatusRepo.save(new ApplianceStatus(appliance, customer, STATUS, LAST_MODIFIED));
 
         List<ApplianceStatus> applianceStatusList = applianceStatusService.getApplianceStatusList();
         assertTrue(!applianceStatusList.isEmpty());
@@ -92,14 +90,13 @@ public class ApplianceStatusServiceIntegrationTest {
 
     @Test
     public void testCreateApplianceStatus() {
-        ApplianceStatus applianceStatus = applianceStatusService.createApplianceStatus(CUSTOMER_ID, APPLIANCE_ID );
+        ApplianceStatus applianceStatus = applianceStatusService.createApplianceStatus(CUSTOMER_ID, APPLIANCE_ID);
 
         ApplianceStatus applianceStatusCreated = applianceStatusRepo.findById(applianceStatus.getId()).orElseThrow(() -> new NoSuchElementException());
 
-        assertEquals(applianceStatusCreated.getAppliance().getId(), appliance.getId());
-        assertEquals(applianceStatusCreated.getCustomer().getId(), customer.getId());
-        assertEquals(applianceStatusCreated.getStatus(), applianceStatus.getStatus());
-        assertEquals(applianceStatusCreated.getLast_modified(), applianceStatus.getLast_modified());
+        assertEquals(applianceStatusCreated.getAppliance().getApplianceId(), APPLIANCE_ID);
+        assertEquals(applianceStatusCreated.getCustomer().getCustomerId(), CUSTOMER_ID);
+        assertEquals(applianceStatusCreated.getStatus(), Status.up.name());
     }
 
     @Test
@@ -109,18 +106,19 @@ public class ApplianceStatusServiceIntegrationTest {
         ApplianceStatus createdApplianceStatus = applianceStatusService.getApplianceStatusById(applianceStatus.getId());
 
         assertNotNull(createdApplianceStatus);
+        assertEquals(createdApplianceStatus.getAppliance().getApplianceId(), APPLIANCE_ID);
+        assertEquals(createdApplianceStatus.getCustomer().getCustomerId(), CUSTOMER_ID);
+        assertEquals(createdApplianceStatus.getStatus(), STATUS);
     }
 
     @Test
     public void testUpdateApplianceStatus() {
         ApplianceStatus applianceStatus = applianceStatusRepo.save(new ApplianceStatus(appliance, customer, STATUS, LAST_MODIFIED));
 
-        applianceStatus.setStatus("new Status");
-        applianceStatus.setLast_modified(new Timestamp(System.currentTimeMillis()));
-        ApplianceStatus createdApplianceStatus = applianceStatusService.updateStatusForAppliance(applianceStatus.getId(), Status.up);
+        ApplianceStatus updatedApplianceStatus = applianceStatusService.updateStatusForAppliance(applianceStatus.getId(), Status.up);
 
-        assertNotNull(createdApplianceStatus);
-        assertEquals(createdApplianceStatus.getStatus(), Status.up.name());
+        assertNotNull(updatedApplianceStatus);
+        assertEquals(updatedApplianceStatus.getStatus(), Status.up.name());
     }
 
 }
